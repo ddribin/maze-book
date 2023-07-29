@@ -20,6 +20,6 @@ class BinaryTree:
     
 
 if __name__ == "__main__":
-    grid = Grid(8, 8)
+    grid = Grid(4, 4)
     BinaryTree.on(grid)
     print(grid)

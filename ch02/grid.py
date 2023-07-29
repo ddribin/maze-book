@@ -52,15 +52,13 @@ class Grid:
             for cell in row:
                 body = "   " # Three spaces
                 east_boundary = " " if cell.is_linked(cell.east) else "|"
-                top = top + body + east_boundary
+                top += body + east_boundary
 
                 south_boundary = "   " if cell.is_linked(cell.south) else "---"
                 corner = "+"
-                bottom = bottom + south_boundary + corner
+                bottom += south_boundary + corner
 
-            output += top
-            output += "\n"
-            output += bottom
-            output += "\n"
+            output += top + "\n"
+            output += bottom + "\n"
 
         return output
