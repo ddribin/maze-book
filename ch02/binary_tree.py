@@ -1,21 +1,22 @@
 from grid import Grid
+from cell import Cell
 import random
 
 class BinaryTree:
     @classmethod
-    def on(cls, grid):
+    def on(cls, grid: Grid) -> Grid:
         for cell in grid.cell_iter():
-            neighbors = []
+            neighbors: list[Cell] = []
             if cell.north:
                 neighbors.append(cell.north)
             if cell.east:
                 neighbors.append(cell.east)
 
-            neighbor = None
+            neighbor: Cell | None = None
             if len(neighbors) > 0:
                 index = random.randint(0, len(neighbors)-1)
                 neighbor = neighbors[index]
-            if neighbor != None:
+            if neighbor is not None:
                 cell.link(neighbor)
 
         return grid

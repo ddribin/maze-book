@@ -1,30 +1,33 @@
+from __future__ import annotations
+from typing import Iterable
+
 class Cell:
-    def __init__(self, row, column):
+    def __init__(self, row: int, column: int) -> None:
         self.row = row
         self.column = column
-        self.links = {}
-        self.north = None
-        self.south = None
-        self.east = None
-        self.west = None
+        self._links: dict[Cell, bool] = {}
+        self.north: Cell | None = None
+        self.south: Cell | None = None
+        self.east: Cell | None = None
+        self.west: Cell | None = None
 
-    def link(self, cell, bidi=True):
-        self.links[cell] = True
+    def link(self, cell: Cell, bidi: bool = True) -> None:
+        self._links[cell] = True
         if bidi:
             cell.link(self, False)
 
-    def unlink(self, cell, bidi=True):
-        self.links.remove(cell)
+    def unlink(self, cell: Cell, bidi: bool = True):
+        del self._links[cell]
         if bidi:
             cell.unlink(self, False)
 
-    def links(self):
-        return self.links.keys()
+    def links(self) -> Iterable[Cell]:
+        return self._links.keys()
     
-    def is_linked(self, cell):
-        return cell in self.links
+    def is_linked(self, cell: Cell | None) -> bool:
+        return cell in self._links
     
-    def neighbors(self):
+    def neighbors(self) -> list[Cell]:
         list = []
         if self.north: list.append(self.north)
         if self.south: list.append(self.south)
@@ -32,6 +35,6 @@ class Cell:
         if self.west: list.append(self.west)
         return list
     
-    def __str__(self):
+    def __str__(self) -> str:
         return f'Cell[{self.row}, {self.column})'
     

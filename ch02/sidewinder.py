@@ -1,17 +1,18 @@
 from grid import Grid
+from cell import Cell
 import random
 
 class Sidewinder:
     @classmethod
-    def on(cls, grid):
+    def on(cls, grid: Grid) -> Grid:
         for row in grid.row_iter():
-            run = []
+            run: list[Cell] = []
 
             for cell in row:
                 run.append(cell)
 
-                at_eastern_boundary = cell.east == None
-                at_northern_boundery = cell.north == None
+                at_eastern_boundary = cell.east is None
+                at_northern_boundery = cell.north is None
 
                 should_close_out = (
                     at_eastern_boundary or
@@ -25,8 +26,8 @@ class Sidewinder:
                         member.link(member.north)
                     run.clear()
                 else:
-                    cell.link(cell.east)
-
+                    if cell.east:
+                        cell.link(cell.east)
         return grid
 
 if __name__ == "__main__":
