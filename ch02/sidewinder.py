@@ -2,6 +2,7 @@ from grid import Grid
 from cell import Cell
 import random
 import sys
+from PIL import Image
 
 class Sidewinder:
     @classmethod
@@ -40,3 +41,5 @@ if __name__ == "__main__":
     grid = Grid(rows, columns)
     Sidewinder.on(grid)
     print(grid)
+    img = grid.to_png()
+    img.save('maze.png')

@@ -32,3 +32,5 @@ if __name__ == "__main__":
     grid = Grid(rows, columns)
     BinaryTree.on(grid)
     print(grid)
+    img = grid.to_png()
+    img.save('maze.png')

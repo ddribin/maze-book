@@ -1,7 +1,8 @@
 from cell import Cell
 import itertools
-from typing import Iterable
+from typing import Iterable, Any
 from pprint import pp
+from PIL import Image, ImageDraw
 
 class Grid:
     def __init__(self, rows: int, columns: int) -> None:
@@ -63,3 +64,31 @@ class Grid:
             output += bottom + "\n"
 
         return output
+    
+    def to_png(self, cell_size: int = 10) -> Any:
+        padding = 5
+        img_width = cell_size * self.columns + padding*2
+        img_height= cell_size * self.rows + padding*2
+
+        background = (255, 255, 255)
+        wall = (0, 0, 0)
+
+        image = Image.new('RGBA', (img_width+1, img_height+1), color=background)
+        draw = ImageDraw.Draw(image)
+        
+        for cell in self.cell_iter():
+            x1 = cell.column * cell_size + padding
+            y1 = cell.row * cell_size + padding
+            x2 = (cell.column + 1) * cell_size + padding
+            y2 = (cell.row + 1) * cell_size + padding
+
+            if cell.north is None:
+                draw.line((x1, y1, x2, y1), wall)
+            if cell.west is None:
+                draw.line((x1, y1, x1, y2), wall)
+            if not cell.is_linked(cell.east):
+                draw.line((x2, y1, x2, y2), wall)
+            if not cell.is_linked(cell.south):
+                draw.line((x1, y2, x2, y2), wall)
+
+        return image
