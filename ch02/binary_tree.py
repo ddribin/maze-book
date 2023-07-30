@@ -6,7 +6,7 @@ import sys
 class BinaryTree:
     @classmethod
     def on(cls, grid: Grid) -> Grid:
-        for cell in grid.cell_iter():
+        for cell in grid:
             neighbors: list[Cell] = []
             if cell.north:
                 neighbors.append(cell.north)

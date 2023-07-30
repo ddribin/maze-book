@@ -1,6 +1,6 @@
 from cell import Cell
 import itertools
-from typing import Iterable, Any
+from typing import Iterable, Iterator, Any
 from pprint import pp
 from PIL import Image, ImageDraw
 
@@ -21,28 +21,29 @@ class Grid:
         return grid
 
     def configure_cells(self) -> None:
-        for cell in self.cell_iter():
+        for cell in self:
             row, col = cell.row, cell.column
 
-            cell.north = self.get_cell(row - 1, col)
-            cell.south = self.get_cell(row + 1, col)
-            cell.west = self.get_cell(row, col - 1)
-            cell.east = self.get_cell(row, col + 1)
+            cell.north = self[row - 1, col]
+            cell.south = self[row + 1, col]
+            cell.west = self[row, col - 1]
+            cell.east = self[row, col + 1]
+
+    def row_iter(self) -> Iterable[list[Cell]]:
+        return iter(self.grid)
     
-    def get_cell(self, row: int, column: int) -> Cell | None:
+    def __getitem__(self, index: tuple[int, int]) -> Cell | None:
+        row, column = index
         if row not in range(self.rows):
             return None
         if column not in range(self.columns):
             return None
         return self.grid[row][column]
 
-    def row_iter(self) -> Iterable[list[Cell]]:
-        return iter(self.grid)
-
-    def cell_iter(self) -> Iterable[Cell]:
+    def __iter__(self) -> Iterator[Cell]:
         return itertools.chain.from_iterable(self.grid)
     
-    def count(self) -> int:
+    def __len__(self) -> int:
         return self.rows * self.columns
     
     def __str__(self) -> str:
@@ -76,7 +77,7 @@ class Grid:
         image = Image.new('RGBA', (img_width+1, img_height+1), color=background)
         draw = ImageDraw.Draw(image)
         
-        for cell in self.cell_iter():
+        for cell in self:
             x1 = cell.column * cell_size + padding
             y1 = cell.row * cell_size + padding
             x2 = (cell.column + 1) * cell_size + padding
