@@ -2,6 +2,7 @@ from grid import Grid
 from cell import Cell
 import random
 import sys
+import os
 
 class BinaryTree:
     @classmethod
@@ -26,9 +27,17 @@ class BinaryTree:
 if __name__ == "__main__":
     rows = 4
     columns = 4
-    if len(sys.argv) == 3:
+
+    if len(sys.argv) >= 3:
         rows = int(sys.argv[1])
         columns = int(sys.argv[2])
+
+    if len(sys.argv) == 4:
+        seed = int(sys.argv[3])
+    else:
+        seed = int.from_bytes(os.urandom(8))
+    random.seed(seed)
+
     grid = Grid(rows, columns)
     BinaryTree.on(grid)
     print(grid)
