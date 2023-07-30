@@ -28,11 +28,11 @@ class Grid:
             cell.east = self.get_cell(row, col + 1)
     
     def get_cell(self, row, column):
-        try:
-            cell = self.grid[row][column]
-        except IndexError:
-            cell = None
-        return cell
+        if row not in range(self.rows):
+            return None
+        if column not in range(self.columns):
+            return None
+        return self.grid[row][column]
 
     def row_iter(self):
         return iter(self.grid)

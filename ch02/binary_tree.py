@@ -11,8 +11,10 @@ class BinaryTree:
             if cell.east:
                 neighbors.append(cell.east)
 
-            index = random.randint(0, len(neighbors)-1)
-            neighbor = neighbors[index]
+            neighbor = None
+            if len(neighbors) > 0:
+                index = random.randint(0, len(neighbors)-1)
+                neighbor = neighbors[index]
             if neighbor != None:
                 cell.link(neighbor)
 
