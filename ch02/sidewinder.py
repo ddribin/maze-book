@@ -1,6 +1,7 @@
 from grid import Grid
 from cell import Cell
 import random
+import sys
 
 class Sidewinder:
     @classmethod
@@ -31,6 +32,11 @@ class Sidewinder:
         return grid
 
 if __name__ == "__main__":
-    grid = Grid(4, 4)
+    rows = 4
+    columns = 4
+    if len(sys.argv) == 3:
+        rows = int(sys.argv[1])
+        columns = int(sys.argv[2])
+    grid = Grid(rows, columns)
     Sidewinder.on(grid)
     print(grid)
