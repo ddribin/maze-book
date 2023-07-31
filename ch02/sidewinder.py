@@ -3,7 +3,6 @@ from cell import Cell
 import random
 import sys
 import os
-from PIL import Image
 
 class Sidewinder:
     @classmethod

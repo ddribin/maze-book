@@ -66,7 +66,7 @@ class Grid:
 
         return output
     
-    def to_png(self, cell_size: int = 10) -> Any:
+    def to_png(self, cell_size: int = 10) -> Image.Image:
         padding = 5
         img_width = cell_size * self.columns + padding*2
         img_height= cell_size * self.rows + padding*2
