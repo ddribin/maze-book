@@ -19,6 +19,21 @@ class Distances:
     def cells(self) -> list[Cell]:
         return list(self._cells.keys())
     
+    def path_to(self, goal: Cell) -> Distances:
+        current = goal
+        
+        breadcrumbs = Distances(self.root)
+        breadcrumbs[current] = self._cells[current]
+
+        while current != self.root:
+            for neighbor in current.links():
+                if self._cells[neighbor] < self._cells[current]:
+                    breadcrumbs[neighbor] = self._cells[neighbor]
+                    current = neighbor
+                    break
+
+        return breadcrumbs
+    
 
     @staticmethod
     def from_root(root: Cell) -> Distances:
@@ -30,7 +45,6 @@ class Distances:
 
             for cell in frontier:
                 for linked in cell.links():
-                    print(f'  {linked}')
                     if linked in distances:
                         continue
                     distances[linked] = distances[cell] + 1

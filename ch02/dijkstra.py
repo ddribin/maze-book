@@ -15,9 +15,15 @@ def main() -> int:
     distances = Distances.from_root(start)
     grid.distances = distances
     print(grid)
+    print('path from northwest coner to southwest corner')
+    southwest_corner = grid[grid.rows - 1, 0]
+    if southwest_corner is None:
+        return 2
+    grid.distances = distances.path_to(southwest_corner)
+    print(grid)
     return 0
 
 
 if __name__ == '__main__':
-    main()
+    exit(main())
 
