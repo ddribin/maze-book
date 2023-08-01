@@ -1,8 +1,10 @@
-from cell import Cell
 import itertools
 from typing import Iterable, Iterator, Any
 from pprint import pp
 from PIL import Image, ImageDraw
+
+from cell import Cell
+from distances import Distances
 
 class Grid:
     def __init__(self, rows: int, columns: int) -> None:
@@ -53,7 +55,8 @@ class Grid:
             bottom = "+"
 
             for cell in row:
-                body = "   " # Three spaces
+                contents = self.contents_of(cell)
+                body = f" {contents} " # Three spaces
                 east_boundary = " " if cell.is_linked(cell.east) else "|"
                 top += body + east_boundary
 
@@ -65,6 +68,9 @@ class Grid:
             output += bottom + "\n"
 
         return output
+    
+    def contents_of(self, cell: Cell) -> str:
+        return " "
     
     def to_png(self, cell_size: int = 10) -> Image.Image:
         padding = 5
@@ -93,3 +99,26 @@ class Grid:
                 draw.line((x1, y2, x2, y2), wall)
 
         return image
+    
+class DistanceGrid(Grid):
+    def __init__(self, rows: int, columns: int) -> None:
+        super().__init__(rows, columns)
+        self.distances : Distances | None = None
+
+    def contents_of(self, cell: Cell) -> str:
+        try:
+            distances = self.distances
+            if distances:
+                distance = distances[cell]
+                return self.to_base36(distance)
+        except KeyError:
+            pass
+            
+        return super().contents_of(cell)
+    
+    def to_base36(self, i: int) -> str:
+        BASE_36 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        if i < len(BASE_36):
+            return BASE_36[i]
+        else:
+            return '!'

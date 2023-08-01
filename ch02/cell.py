@@ -37,4 +37,3 @@ class Cell:
     
     def __str__(self) -> str:
         return f'Cell[{self.row}, {self.column})'
-    
