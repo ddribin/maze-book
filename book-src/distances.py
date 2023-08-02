@@ -34,6 +34,17 @@ class Distances:
 
         return breadcrumbs
     
+    def max(self) -> tuple[Cell, int]:
+        max_distance = 0
+        max_cell = self.root
+
+        for (cell, distance) in self._cells.items():
+            if distance > max_distance:
+                max_cell = cell
+                max_distance = distance
+
+        return (max_cell, max_distance)
+    
 
     @staticmethod
     def from_root(root: Cell) -> Distances:
