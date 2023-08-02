@@ -43,7 +43,7 @@ if __name__ == "__main__":
     if len(sys.argv) == 4:
         seed = int(sys.argv[3])
     else:
-        seed = int.from_bytes(os.urandom(8))
+        seed = int.from_bytes(os.urandom(8), 'big')
     random.seed(seed)
 
     grid = Grid(rows, columns)
