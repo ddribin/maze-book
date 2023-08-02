@@ -1,10 +1,13 @@
 import itertools
-from typing import Iterable, Iterator, Any
+from typing import Iterable, Iterator
 from pprint import pp
 from PIL import Image, ImageDraw
+from cell import Cell
 
 from cell import Cell
 from distances import Distances
+
+Color = tuple[int, int, int]
 
 class Grid:
     def __init__(self, rows: int, columns: int) -> None:
@@ -72,6 +75,9 @@ class Grid:
     def contents_of(self, cell: Cell) -> str:
         return " "
     
+    def background_color_of(self, cell: Cell) -> Color | None:
+        return None
+    
     def to_png(self, cell_size: int = 10) -> Image.Image:
         padding = 5
         img_width = cell_size * self.columns + padding*2
@@ -83,20 +89,25 @@ class Grid:
         image = Image.new('RGBA', (img_width+1, img_height+1), color=background)
         draw = ImageDraw.Draw(image)
         
-        for cell in self:
-            x1 = cell.column * cell_size + padding
-            y1 = cell.row * cell_size + padding
-            x2 = (cell.column + 1) * cell_size + padding
-            y2 = (cell.row + 1) * cell_size + padding
+        for mode in ['backgrounds', 'walls']:
+            for cell in self:
+                x1 = cell.column * cell_size + padding
+                y1 = cell.row * cell_size + padding
+                x2 = (cell.column + 1) * cell_size + padding
+                y2 = (cell.row + 1) * cell_size + padding
 
-            if cell.north is None:
-                draw.line((x1, y1, x2, y1), wall)
-            if cell.west is None:
-                draw.line((x1, y1, x1, y2), wall)
-            if not cell.is_linked(cell.east):
-                draw.line((x2, y1, x2, y2), wall)
-            if not cell.is_linked(cell.south):
-                draw.line((x1, y2, x2, y2), wall)
+                if mode == 'backgrounds':
+                    color = self.background_color_of(cell)
+                    draw.rectangle((x1, y1, x2, y2), fill=color)
+                else:
+                    if cell.north is None:
+                        draw.line((x1, y1, x2, y1), wall)
+                    if cell.west is None:
+                        draw.line((x1, y1, x1, y2), wall)
+                    if not cell.is_linked(cell.east):
+                        draw.line((x2, y1, x2, y2), wall)
+                    if not cell.is_linked(cell.south):
+                        draw.line((x1, y2, x2, y2), wall)
 
         return image
     
@@ -122,3 +133,31 @@ class DistanceGrid(Grid):
             return BASE_36[i]
         else:
             return '!'
+
+class ColoredGrid(Grid):
+    def __init__(self, rows: int, columns: int) -> None:
+        super().__init__(rows, columns)
+        self._distances: Distances | None = None
+        self._maximum: int | None = None
+
+    @property
+    def distances(self) -> Distances | None:
+        return self._distances
+    
+    @distances.setter
+    def distances(self, distances: Distances) -> None:
+        self._distances = distances
+        _, max_distance = distances.max()
+        self._maximum = max_distance
+
+    def background_color_of(self, cell: Cell) -> Color | None:
+        if self._distances is None: return None
+        if self._maximum is None: return None
+        distance = self._distances[cell]
+        if distance is None: return None
+
+        intensity = float(self._maximum - distance) / self._maximum
+        dark = round(255 * intensity)
+        bright = 128 + round(127 * intensity)
+        return (dark, bright, bright)
+    
