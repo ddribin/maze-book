@@ -1,4 +1,5 @@
 import itertools
+import random
 from typing import Iterable, Iterator
 from pprint import pp
 from PIL import Image, ImageDraw
@@ -36,6 +37,11 @@ class Grid:
 
     def row_iter(self) -> Iterable[list[Cell]]:
         return iter(self.grid)
+    
+    def random_cell(self) -> Cell:
+        row = random.randint(0, self.rows - 1)
+        column = random.randint(0, self.columns - 1)
+        return self.grid[row][column]
     
     def __getitem__(self, index: tuple[int, int]) -> Cell | None:
         row, column = index
