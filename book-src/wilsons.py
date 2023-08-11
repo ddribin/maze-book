@@ -12,7 +12,7 @@ def sample(l: Sequence[T]) -> T:
     return l[index]
 
 
-class AldousBroder:
+class Wilsons:
     @classmethod
     def on(cls, grid: Grid) -> Grid:
         unvisited: list[Cell] = []
@@ -47,14 +47,14 @@ class AldousBroder:
 
 def main() -> int:
     grid = Grid(50, 50)
-    AldousBroder.on(grid)
+    Wilsons.on(grid)
 
     img = grid.to_png()
     img.save("maze_wilsons.png")
 
     for i in range(6):
         grid = ColoredGrid(50, 50)
-        AldousBroder.on(grid)
+        Wilsons.on(grid)
 
         start_row = round(grid.rows / 2)
         start_column = round(grid.columns / 2)
