@@ -1,7 +1,6 @@
-import random
-
 from grid import Grid, ColoredGrid
 from distances import Distances
+from utils import sample
 
 class AldousBroder:
     @classmethod
@@ -11,8 +10,7 @@ class AldousBroder:
 
         while unvisited > 0:
             neighbors = cell.neighbors()
-            index = random.randint(0, len(neighbors) - 1)
-            neighbor = neighbors[index]
+            neighbor = sample(neighbors)
 
             if not neighbor.links():
                 cell.link(neighbor)

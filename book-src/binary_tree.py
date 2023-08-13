@@ -1,5 +1,6 @@
 from grid import Grid
 from cell import Cell
+from utils import sample
 import random
 import sys
 import os
@@ -16,8 +17,7 @@ class BinaryTree:
 
             neighbor: Cell | None = None
             if len(neighbors) > 0:
-                index = random.randint(0, len(neighbors)-1)
-                neighbor = neighbors[index]
+                neighbor = sample(neighbors)
             if neighbor is not None:
                 cell.link(neighbor)
 

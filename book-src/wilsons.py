@@ -1,16 +1,7 @@
-import random
-from typing import TypeVar, Sequence
-
 from grid import Grid, ColoredGrid
 from cell import Cell
 from distances import Distances
-
-T = TypeVar('T')
-
-def sample(l: Sequence[T]) -> T:
-    index = random.randint(0, len(l) - 1)
-    return l[index]
-
+from utils import sample
 
 class Wilsons:
     @classmethod

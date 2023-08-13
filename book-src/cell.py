@@ -35,5 +35,5 @@ class Cell:
         if self.west: list.append(self.west)
         return list
     
-    def __str__(self) -> str:
+    def __repr__(self) -> str:
         return f'Cell[{self.row}, {self.column})'

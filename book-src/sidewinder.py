@@ -1,5 +1,6 @@
 from grid import Grid
 from cell import Cell
+from utils import sample
 import random
 import sys
 import os
@@ -22,8 +23,7 @@ class Sidewinder:
                 )
 
                 if should_close_out:
-                    index = random.randint(0, len(run)-1)
-                    member = run[index]
+                    member = sample(run)
                     if member.north:
                         member.link(member.north)
                     run.clear()
