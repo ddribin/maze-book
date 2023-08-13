@@ -57,7 +57,7 @@ class Grid:
     def __len__(self) -> int:
         return self.rows * self.columns
     
-    def __str__(self) -> str:
+    def __repr__(self) -> str:
         output = "+" + "---+" * self.columns + "\n"
         for row in self.row_iter():
             top = "|"
