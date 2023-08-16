@@ -1,4 +1,4 @@
-from grid import Grid, ColoredGrid
+from grid import Grid
 from cell import Cell
 from utils import sample
 
